@@ -1,0 +1,466 @@
+{
+  "famiglia": {
+    "disponente": "Giorgio Bianchi",
+    "eta": 74,
+    "sesso": "M",
+    "persone": [
+      {
+        "nome": "Marco",
+        "parentela": "figlio",
+        "eta": 46,
+        "disabile": false,
+        "prima_casa": false,
+        "note": "lavora nell'azienda di famiglia"
+      },
+      {
+        "nome": "Laura",
+        "parentela": "figlio",
+        "eta": 42,
+        "disabile": false,
+        "prima_casa": false,
+        "note": "medico, non lavora nell'azienda"
+      },
+      {
+        "nome": "Sofia",
+        "parentela": "discendente",
+        "eta": 12,
+        "disabile": false,
+        "prima_casa": false,
+        "note": "figlia di Laura"
+      },
+      {
+        "nome": "Elena",
+        "parentela": "estraneo",
+        "eta": 66,
+        "disabile": false,
+        "prima_casa": true,
+        "note": "compagna convivente da quindici anni"
+      }
+    ]
+  },
+  "beni": [
+    {
+      "nome": "Casa di Milano",
+      "tipo": "immobile",
+      "valore": 1100000,
+      "rendita": 2600,
+      "categoria": "A/2"
+    },
+    {
+      "nome": "Casa al mare",
+      "tipo": "immobile",
+      "valore": 750000,
+      "rendita": 1500,
+      "categoria": "A/7"
+    },
+    {
+      "nome": "Ufficio in via Larga",
+      "tipo": "immobile",
+      "valore": 600000,
+      "rendita": 4200,
+      "categoria": "A/10"
+    },
+    {
+      "nome": "Bianchi Meccanica srl (70%)",
+      "tipo": "partecipazione",
+      "valore": 3000000,
+      "valore_fiscale": 1800000,
+      "quota_societaria": 0.7
+    },
+    {
+      "nome": "BTP",
+      "tipo": "titoli_stato",
+      "valore": 600000
+    },
+    {
+      "nome": "ETF e fondi",
+      "tipo": "fondi",
+      "valore": 2800000,
+      "costo_fiscale": 1900000
+    },
+    {
+      "nome": "Conto corrente",
+      "tipo": "liquidita",
+      "valore": 500000
+    }
+  ],
+  "strategie": [
+    {
+      "nome": "Successione legittima",
+      "descrizione": "Nessun testamento: tutto ai due figli in parti uguali, nulla a Elena e a Sofia.",
+      "atti": []
+    },
+    {
+      "nome": "Testamento fai da te",
+      "descrizione": "Azienda ed ETF a Marco, immobili a Laura, usufrutto della casa a Elena.",
+      "atti": [],
+      "testamento": {
+        "residuo": {
+          "Laura": 1.0
+        },
+        "assegnazioni": {
+          "Bianchi Meccanica srl (70%)": {
+            "Marco": 1.0
+          },
+          "ETF e fondi": {
+            "Marco": 1.0
+          },
+          "Casa di Milano": {
+            "Laura": 1.0
+          },
+          "Casa al mare": {
+            "Laura": 1.0
+          },
+          "Ufficio in via Larga": {
+            "Laura": 1.0
+          }
+        },
+        "usufrutti": {
+          "Casa di Milano": "Elena"
+        },
+        "legati": {}
+      }
+    },
+    {
+      "nome": "Testamento",
+      "descrizione": "Azienda a Marco, immobili a Laura, usufrutto della casa e 400.000 € a Elena, 200.000 € a Sofia, il resto per un quarto a Marco e tre quarti a Laura.",
+      "atti": [],
+      "testamento": {
+        "residuo": {
+          "Marco": 0.25,
+          "Laura": 0.75
+        },
+        "assegnazioni": {
+          "Bianchi Meccanica srl (70%)": {
+            "Marco": 1.0
+          },
+          "Casa al mare": {
+            "Laura": 1.0
+          },
+          "Ufficio in via Larga": {
+            "Laura": 1.0
+          },
+          "Casa di Milano": {
+            "Laura": 1.0
+          }
+        },
+        "usufrutti": {
+          "Casa di Milano": "Elena"
+        },
+        "legati": {
+          "Elena": 400000,
+          "Sofia": 200000
+        }
+      }
+    },
+    {
+      "nome": "Donazioni in vita",
+      "descrizione": "Come il testamento, ma oggi l'azienda a Marco e 1 milione di ETF a Laura.",
+      "atti": [
+        {
+          "tipo": "donazione",
+          "beneficiario": "Marco",
+          "bene": "Bianchi Meccanica srl (70%)",
+          "quota": 1.0,
+          "nuda_proprieta": false
+        },
+        {
+          "tipo": "donazione",
+          "beneficiario": "Laura",
+          "bene": "ETF e fondi",
+          "quota": 1.0,
+          "importo": 1000000,
+          "nuda_proprieta": false
+        }
+      ],
+      "testamento": {
+        "residuo": {
+          "Marco": 0.25,
+          "Laura": 0.75
+        },
+        "assegnazioni": {
+          "Bianchi Meccanica srl (70%)": {
+            "Marco": 1.0
+          },
+          "Casa al mare": {
+            "Laura": 1.0
+          },
+          "Ufficio in via Larga": {
+            "Laura": 1.0
+          },
+          "Casa di Milano": {
+            "Laura": 1.0
+          }
+        },
+        "usufrutti": {
+          "Casa di Milano": "Elena"
+        },
+        "legati": {
+          "Elena": 400000,
+          "Sofia": 200000
+        }
+      }
+    },
+    {
+      "nome": "Nuda proprietà",
+      "descrizione": "Come il testamento, ma oggi la nuda proprietà di casa al mare e ufficio a Laura.",
+      "atti": [
+        {
+          "tipo": "donazione",
+          "beneficiario": "Laura",
+          "bene": "Casa al mare",
+          "quota": 1.0,
+          "nuda_proprieta": true
+        },
+        {
+          "tipo": "donazione",
+          "beneficiario": "Laura",
+          "bene": "Ufficio in via Larga",
+          "quota": 1.0,
+          "nuda_proprieta": true
+        }
+      ],
+      "testamento": {
+        "residuo": {
+          "Marco": 0.25,
+          "Laura": 0.75
+        },
+        "assegnazioni": {
+          "Bianchi Meccanica srl (70%)": {
+            "Marco": 1.0
+          },
+          "Casa al mare": {
+            "Laura": 1.0
+          },
+          "Ufficio in via Larga": {
+            "Laura": 1.0
+          },
+          "Casa di Milano": {
+            "Laura": 1.0
+          }
+        },
+        "usufrutti": {
+          "Casa di Milano": "Elena"
+        },
+        "legati": {
+          "Elena": 400000,
+          "Sofia": 200000
+        }
+      }
+    },
+    {
+      "nome": "Polizza vita",
+      "descrizione": "Come il testamento, ma i 400.000 € di Elena in una polizza vita pagata con il conto corrente.",
+      "atti": [
+        {
+          "tipo": "polizza",
+          "beneficiari": {
+            "Elena": 1.0
+          },
+          "importo": 400000,
+          "da_bene": "Conto corrente",
+          "costi_annui": 0.01,
+          "quota_stato": 0.0,
+          "nome": "Polizza vita"
+        }
+      ],
+      "testamento": {
+        "residuo": {
+          "Marco": 0.25,
+          "Laura": 0.75
+        },
+        "assegnazioni": {
+          "Bianchi Meccanica srl (70%)": {
+            "Marco": 1.0
+          },
+          "Casa al mare": {
+            "Laura": 1.0
+          },
+          "Ufficio in via Larga": {
+            "Laura": 1.0
+          },
+          "Casa di Milano": {
+            "Laura": 1.0
+          }
+        },
+        "usufrutti": {
+          "Casa di Milano": "Elena"
+        },
+        "legati": {
+          "Sofia": 200000
+        }
+      }
+    },
+    {
+      "nome": "BTP per legato",
+      "descrizione": "Come il testamento, ma a Elena 400.000 € di BTP invece del denaro.",
+      "atti": [],
+      "testamento": {
+        "residuo": {
+          "Marco": 0.25,
+          "Laura": 0.75
+        },
+        "assegnazioni": {
+          "Bianchi Meccanica srl (70%)": {
+            "Marco": 1.0
+          },
+          "Casa al mare": {
+            "Laura": 1.0
+          },
+          "Ufficio in via Larga": {
+            "Laura": 1.0
+          },
+          "Casa di Milano": {
+            "Laura": 1.0
+          },
+          "BTP": {
+            "Elena": 0.6666666666666666
+          }
+        },
+        "usufrutti": {
+          "Casa di Milano": "Elena"
+        },
+        "legati": {
+          "Sofia": 200000
+        }
+      }
+    },
+    {
+      "nome": "Trust",
+      "descrizione": "Come il testamento, ma i 200.000 € di Sofia in un trust fino ai suoi 25 anni.",
+      "atti": [
+        {
+          "tipo": "trust",
+          "beneficiario": "Sofia",
+          "importo": 200000,
+          "da_bene": "Conto corrente",
+          "durata": 13,
+          "entrata": true,
+          "costo_istituzione": 6000.0,
+          "costo_annuo": 0.004,
+          "minimo_annuo": 3000.0,
+          "nome": "Trust"
+        }
+      ],
+      "testamento": {
+        "residuo": {
+          "Marco": 0.25,
+          "Laura": 0.75
+        },
+        "assegnazioni": {
+          "Bianchi Meccanica srl (70%)": {
+            "Marco": 1.0
+          },
+          "Casa al mare": {
+            "Laura": 1.0
+          },
+          "Ufficio in via Larga": {
+            "Laura": 1.0
+          },
+          "Casa di Milano": {
+            "Laura": 1.0
+          }
+        },
+        "usufrutti": {
+          "Casa di Milano": "Elena"
+        },
+        "legati": {
+          "Elena": 400000
+        }
+      }
+    },
+    {
+      "nome": "Patto di famiglia",
+      "descrizione": "Oggi l'azienda a Marco con un patto di famiglia e 1 milione a Laura (BTP e conto) come liquidazione; il resto per testamento, il 55% a Laura e il 45% a Marco, con l'usufrutto della casa e 400.000 € a Elena e 200.000 € a Sofia.",
+      "atti": [
+        {
+          "tipo": "patto_di_famiglia",
+          "assegnatario": "Marco",
+          "bene": "Bianchi Meccanica srl (70%)",
+          "liquidazioni": {
+            "Laura": 1000000
+          },
+          "da_beni": [
+            "BTP",
+            "Conto corrente"
+          ],
+          "costo_atto": 5000.0,
+          "nome": "Patto di famiglia"
+        }
+      ],
+      "testamento": {
+        "residuo": {
+          "Marco": 0.45,
+          "Laura": 0.55
+        },
+        "assegnazioni": {},
+        "usufrutti": {
+          "Casa di Milano": "Elena"
+        },
+        "legati": {
+          "Elena": 400000,
+          "Sofia": 200000
+        }
+      }
+    },
+    {
+      "nome": "Piano integrato",
+      "descrizione": "Il patto di famiglia, più oggi la nuda proprietà della casa al mare a Laura e dell'ufficio a Marco; il resto per testamento come sopra.",
+      "atti": [
+        {
+          "tipo": "patto_di_famiglia",
+          "assegnatario": "Marco",
+          "bene": "Bianchi Meccanica srl (70%)",
+          "liquidazioni": {
+            "Laura": 1000000
+          },
+          "da_beni": [
+            "BTP",
+            "Conto corrente"
+          ],
+          "costo_atto": 5000.0,
+          "nome": "Patto di famiglia"
+        },
+        {
+          "tipo": "donazione",
+          "beneficiario": "Laura",
+          "bene": "Casa al mare",
+          "quota": 1.0,
+          "nuda_proprieta": true
+        },
+        {
+          "tipo": "donazione",
+          "beneficiario": "Marco",
+          "bene": "Ufficio in via Larga",
+          "quota": 1.0,
+          "nuda_proprieta": true
+        }
+      ],
+      "testamento": {
+        "residuo": {
+          "Marco": 0.45,
+          "Laura": 0.55
+        },
+        "assegnazioni": {},
+        "usufrutti": {
+          "Casa di Milano": "Elena"
+        },
+        "legati": {
+          "Elena": 400000,
+          "Sofia": 200000
+        }
+      }
+    }
+  ],
+  "parametri": {
+    "tasso_sconto": 0.03,
+    "costo_atto_donazione": 2500.0,
+    "costo_successione": 3000.0,
+    "comproprieta_esente": true
+  },
+  "simulazione": {
+    "scenari": 1000,
+    "seme": 7
+  },
+  "riferimento": "Testamento"
+}

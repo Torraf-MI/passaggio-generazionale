@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Passaggio generazionale – {{ disponente }}</title>
+{% if plotly_inline %}<script>{{ plotly_inline | safe }}</script>{% else %}<script src="{{ plotly_cdn }}"></script>{% endif %}
+<style>
+  :root { --blu: #1f4e79; --grigio: #595959; --chiaro: #f2f5f9; }
+  body { font-family: "Segoe UI", Helvetica, Arial, sans-serif; color: #222; max-width: 1000px;
+         margin: 0 auto; padding: 32px 16px 60px; line-height: 1.5; background: #fff; }
+  header { border-bottom: 3px solid var(--blu); padding-bottom: 12px; margin-bottom: 24px; }
+  h1 { color: var(--blu); margin: 0 0 4px; font-size: 1.7rem; }
+  h2 { color: var(--blu); font-size: 1.2rem; margin-top: 38px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+  h3 { font-size: 1rem; margin: 22px 0 6px; }
+  .sub { color: var(--grigio); font-size: .92rem; }
+  .kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin: 16px 0; }
+  .kpi div { background: var(--chiaro); border-radius: 8px; padding: 12px 14px; }
+  .kpi b { display: block; font-size: 1.35rem; color: var(--blu); }
+  .kpi span { font-size: .78rem; color: var(--grigio); text-transform: uppercase; letter-spacing: .03em; }
+  .kpi small { display: block; font-size: .8rem; color: var(--grigio); }
+  .esito { border-left: 5px solid #fab219; background: #fff8e8; padding: 12px 16px; border-radius: 4px; margin: 16px 0; }
+  .azione { border-left: 5px solid #1baf7a; background: #effaf5; padding: 12px 16px; border-radius: 4px; margin: 16px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: .86rem; margin: 10px 0; }
+  th, td { padding: 6px 9px; text-align: right; border-bottom: 1px solid #e5e5e5; vertical-align: top; }
+  th:first-child, td:first-child { text-align: left; }
+  td.testo, th.testo { text-align: left; }
+  th { background: var(--blu); color: #fff; font-weight: 600; }
+  tr:nth-child(even) td { background: #fafbfc; }
+  tr.evidenza td { font-weight: 600; background: #effaf5; }
+  tr.rif td { font-style: italic; }
+  td.neg { color: #c0392b; font-weight: 600; }
+  .scroll { overflow-x: auto; }
+  .scroll table { white-space: nowrap; }
+  .grafico { margin: 14px 0; overflow: hidden; }
+  .note { font-size: .8rem; color: var(--grigio); background: var(--chiaro); padding: 12px 14px; border-radius: 6px; }
+  .strumenti { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .strumenti div { border: 1px solid #e3e6ea; border-radius: 8px; padding: 10px 14px; font-size: .9rem; }
+  .strumenti h3 { margin-top: 4px; color: var(--blu); }
+  ul { padding-left: 20px; }
+  @media print { .grafico { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Passaggio generazionale del patrimonio</h1>
+  <div class="sub">Preparato per <b>{{ disponente }}</b>, {{ eta }} anni · regole 2026 · report del {{ oggi }}</div>
+</header>
+{% if data_note %}<p class="note">{{ data_note }}</p>{% endif %}
+
+<h2>Sintesi</h2>
+<div class="kpi">
+  {% for label, value, n in kpi %}<div><span>{{ label }}</span><b>{{ value }}</b><small>{{ n }}</small></div>{% endfor %}
+</div>
+<div class="azione">Tra le strategie che realizzano le volontà di {{ nome }} senza rischi per la legittima,
+<b>«{{ best }}»</b> lascia ai beneficiari il netto più alto se la successione si apre tra {{ anno_morte }} anni (la
+speranza di vita è di {{ speranza }} anni). Tutti gli importi
+sono riportati a oggi con un tasso del {{ tasso }} annuo, così le imposte pagate oggi e quelle pagate alla morte sono
+confrontabili.</div>
+
+<h2>La famiglia e le quote</h2>
+<p>Senza testamento il patrimonio va agli eredi legittimi nelle quote del codice civile. Con il testamento si può
+decidere liberamente solo della <b>quota disponibile</b>: il resto è riservato ai <b>legittimari</b> (coniuge, figli e,
+se non ci sono figli, genitori). Conviventi, nipoti, fratelli e amici ricevono qualcosa solo se il disponente lo decide.</p>
+<div class="scroll"><table>
+  <tr><th>Persona</th><th class="testo">Rapporto</th><th>Età</th><th>Senza testamento</th><th>Legittima</th><th>Aliquota</th><th>Franchigia</th><th class="testo">Note</th></tr>
+  {% for p in persone %}<tr><td>{{ p.nome }}</td><td class="testo">{{ p.parentela }}</td><td>{{ p.eta }}</td><td>{{ p.ab }}</td><td>{{ p.riserva }}</td><td>{{ p.aliquota }}</td><td>{{ p.franchigia }}</td><td class="testo">{{ p.note }}</td></tr>{% endfor %}
+</table></div>
+<div class="grafico">{{ grafici.quote | safe }}</div>
+
+<h2>Il patrimonio</h2>
+<p>L'imposta non si calcola sul valore di mercato. Gli immobili pagano sul <b>valore catastale</b> (rendita × 1,05 ×
+moltiplicatore), che l'Agenzia non può rettificare; le quote di società non quotate sul patrimonio netto; i titoli di
+Stato non pagano nulla; le partecipazioni di controllo che vanno al coniuge o ai discendenti sono esenti se l'erede
+mantiene il controllo per cinque anni.</p>
+<div class="scroll"><table>
+  <tr><th>Bene</th><th class="testo">Tipo</th><th>Valore di mercato</th><th>Base imponibile</th><th>%</th><th class="testo">Nota</th></tr>
+  {% for b in beni %}<tr><td>{{ b.nome }}</td><td class="testo">{{ b.tipo }}</td><td>{{ b.valore }}</td><td>{{ b.base }}</td><td>{{ b.rapporto }}</td><td class="testo">{{ b.nota }}</td></tr>{% endfor %}
+</table></div>
+<div class="grafico">{{ grafici.patrimonio | safe }}</div>
+
+<h2>Le imposte</h2>
+<p>Successioni e donazioni hanno le stesse aliquote e franchigie, che dipendono dal rapporto con chi trasferisce. Dal
+2025 le donazioni fatte in vita non si sommano più all'eredità: un figlio ha una franchigia di un milione per le
+donazioni e un'altra per la successione. Le donazioni successive allo stesso beneficiario consumano invece la stessa
+franchigia. Sugli immobili si pagano anche le imposte ipotecaria (2%) e catastale (1%), fisse a 200 € ciascuna se chi
+riceve ha i requisiti «prima casa».</p>
+<table>
+  <tr><th>Beneficiario</th><th>Aliquota</th><th>Franchigia</th></tr>
+  {% for r in aliquote %}<tr><td>{{ r.parentela }}</td><td>{{ r.aliquota }}</td><td>{{ r.franchigia }}</td></tr>{% endfor %}
+</table>
+<div class="grafico">{{ grafici.parentela | safe }}</div>
+
+<h2>Gli strumenti</h2>
+<div class="strumenti">
+  <div><h3>Testamento</h3>Decide della quota disponibile e di come comporre le quote dei legittimari. Un legato può
+  attribuire l'usufrutto della casa, una somma o titoli precisi. Non costa nulla in vita e si può sempre cambiare.</div>
+  <div><h3>Donazione</h3>Trasferisce oggi, con un atto notarile. Usa una franchigia separata da quella della
+  successione e porta fuori dall'eredità la crescita futura. Ma i titoli donati conservano il costo fiscale del
+  donante, mentre quelli ereditati lo aggiornano al valore di successione: la plusvalenza latente resta da pagare.
+  Le donazioni rientrano nel calcolo della legittima.</div>
+  <div><h3>Nuda proprietà</h3>Il donante si tiene l'usufrutto e dona la nuda proprietà, che vale meno quanto più è
+  anziano ({{ np_oggi }} della piena proprietà a {{ eta }} anni). Alla morte l'usufrutto si riunisce senza altre
+  imposte. Nella legittima conta però il valore pieno del bene.</div>
+  <div><h3>Polizza vita</h3>Il capitale va ai beneficiari per diritto proprio: è fuori dall'eredità ed esente
+  dall'imposta di successione anche per un estraneo. Il rendimento è tassato alla morte e i costi annui sono più alti
+  di quelli dei titoli diretti. Ai fini della legittima contano i premi pagati.</div>
+  <div><h3>Patto di famiglia</h3>Trasferisce oggi l'azienda o le quote di controllo a un discendente; gli altri
+  legittimari sono liquidati con il valore della loro quota. Quanto attribuito esce dal calcolo della legittima e non
+  può più essere ridotto. Il trasferimento è esente se l'assegnatario tiene il controllo per cinque anni; le
+  liquidazioni sono tassate come donazioni del disponente.</div>
+  <div><h3>Titoli di Stato</h3>BTP, BOT e CCT non concorrono all'attivo ereditario, chiunque sia l'erede: un legato di
+  titoli di Stato è il modo più economico di lasciare una somma a chi pagherebbe l'8%.</div>
+  <div><h3>Trust</h3>Segrega i beni e li attribuisce quando e come deciso (per esempio a un nipote a 25 anni).
+  L'imposta si può pagare al conferimento, sul valore di oggi, o all'attribuzione. È uno strumento di protezione e di
+  governo del patrimonio, non di risparmio: costa l'istituzione e il trustee ogni anno.</div>
+</div>
+
+<h2>Il confronto delle strategie</h2>
+<p>Ogni strategia è calcolata sullo stesso patrimonio, portato all'anno della successione ({{ anno_morte }} anni) con i
+rendimenti attesi. Le imposte latenti sono le imposte sulle plusvalenze dei titoli ricevuti in donazione, che si
+pagheranno alla vendita.</p>
+<div class="grafico">{{ grafici.confronto | safe }}</div>
+<div class="scroll"><table>
+  <tr><th>Strategia</th>{% for v in voci %}<th style="white-space:normal">{{ v }}</th>{% endfor %}<th>Totale</th><th>Netto ai beneficiari</th><th>Rispetto a «{{ rif }}»</th><th>Lesione di legittima</th></tr>
+  {% for s in strategie %}<tr class="{{ 'evidenza' if s.migliore }} {{ 'rif' if s.riferimento }}"><td>{{ s.nome }}</td>{% for v in s.voci %}<td>{{ v }}</td>{% endfor %}<td>{{ s.totale }}</td><td>{{ s.netto }}</td><td>{{ s.diff }}</td><td class="{{ 'neg' if s.rosso }}">{{ s.lesione }}</td></tr>{% endfor %}
+</table></div>
+<table>
+  <tr><th>Strategia</th><th class="testo">Che cosa prevede</th></tr>
+  {% for s in strategie %}<tr><td>{{ s.nome }}</td><td class="testo">{{ s.descrizione }}</td></tr>{% endfor %}
+</table>
+
+<h3>Chi riceve cosa</h3>
+<div class="grafico">{{ grafici.beneficiari | safe }}</div>
+<div class="scroll"><table>
+  <tr><th>Strategia</th>{% for c in netti_colonne %}<th>{{ c }}</th>{% endfor %}</tr>
+  {% for r in netti %}<tr><td>{{ r.strategia }}</td>{% for v in r.valori %}<td>{{ v }}</td>{% endfor %}</tr>{% endfor %}
+</table></div>
+
+<h2>La legittima</h2>
+<p>Alla morte si fa la <b>riunione fittizia</b>: ai beni lasciati si sommano le donazioni fatte in vita (al valore di
+allora; il denaro al valore nominale) e i premi delle polizze. Ogni legittimario deve ricevere almeno la sua quota di
+questa massa, contando anche quanto ha avuto in vita. Se riceve meno può chiedere la <b>riduzione</b> delle
+disposizioni testamentarie e poi delle donazioni, dalla più recente.</p>
+<div class="grafico">{{ grafici.legittima | safe }}</div>
+<div class="scroll"><table>
+  <tr><th>Strategia</th><th>Massa</th><th>di cui donazioni</th><th>Disponibile</th>{% for p in legittima[0].persone %}<th>{{ p.nome }}: legittima</th><th>ricevuto</th><th>lesione</th>{% endfor %}</tr>
+  {% for r in legittima %}<tr><td>{{ r.strategia }}</td><td>{{ r.massa }}</td><td>{{ r.donatum }}</td><td>{{ r.disponibile }}</td>{% for p in r.persone %}<td>{{ p.riserva }}</td><td>{{ p.ricevuto }}</td><td class="{{ 'neg' if p.rosso }}">{{ p.lesione }}</td>{% endfor %}</tr>{% endfor %}
+</table></div>
+
+<h2>La nuda proprietà</h2>
+<div class="grafico">{{ grafici.usufrutto | safe }}</div>
+
+{% if sim %}
+<h2>Simulazione: quando e con quali mercati</h2>
+<p>L'anno della successione non si conosce. La simulazione genera {{ scenari }} scenari: la durata della vita segue
+una legge di Gompertz calibrata sulla speranza di vita italiana (mediana {{ anni_mediana }} anni, 80% dei casi tra
+{{ anni_p10 }} e {{ anni_p90 }}), i beni crescono con rendimenti casuali correlati. Ogni strategia è valutata sugli
+stessi scenari.</p>
+<div class="grafico">{{ grafici.simulazione | safe }}</div>
+<p>La legittima si verifica alla morte, con i valori di allora. Un testamento che oggi assegna beni precisi (l'azienda
+a un figlio, gli immobili all'altro) può diventare lesivo se quei beni crescono in modo diverso. Il patto di famiglia
+toglie l'azienda dal calcolo e lascia agli eredi quote dello stesso patrimonio, che si muovono insieme.</p>
+<div class="grafico">{{ grafici.rischio | safe }}</div>
+<div class="scroll"><table>
+  <tr><th>Strategia</th><th>Netto medio</th><th>Imposte e costi medi</th><th>Differenza media</th><th>5° percentile</th><th>95° percentile</th><th>Scenari migliori</th><th>Scenari con lesione</th><th>Lesione media</th></tr>
+  {% for r in sim %}<tr class="{{ 'rif' if r.rif }}"><td>{{ r.strategia }}</td><td>{{ r.netto }}</td><td>{{ r.costi }}</td><td>{{ r.media }}</td><td>{{ r.p5 }}</td><td>{{ r.p95 }}</td><td>{{ r.migliori }}</td><td>{{ r.lesione }}</td><td>{{ r.lesione_media }}</td></tr>{% endfor %}
+</table></div>
+<div class="grafico">{{ grafici.tempo | safe }}</div>
+{% endif %}
+
+<h2>Registro delle imposte</h2>
+<div class="scroll"><table>
+  <tr><th>Strategia</th><th class="testo">Momento</th><th class="testo">Atto</th><th class="testo">Persona</th><th>Base imponibile</th><th>Franchigia usata</th><th>Imposta</th></tr>
+  {% for r in registro %}<tr><td>{{ r.strategia }}</td><td class="testo">{{ r.momento }}</td><td class="testo">{{ r.atto }}</td><td class="testo">{{ r.persona }}</td><td>{{ r.base }}</td><td>{{ r.franchigia }}</td><td>{{ r.imposta }}</td></tr>{% endfor %}
+</table></div>
+<p class="sub">Importi nominali, nell'anno in cui si pagano.</p>
+
+<h2>Avvertenze</h2>
+<p class="note">Regole in vigore nel 2026 per un disponente residente in Italia con beni in Italia (D.Lgs. 346/1990
+come modificato dal D.Lgs. 139/2024, codice civile, TUIR). Non sono considerati: debiti e spese deducibili, beni
+all'estero, rappresentazione e fratelli unilaterali, collazione tra coeredi, cautela sociniana,
+tassazione dei redditi del trust, imposta di bollo, plusvalenze latenti sulle partecipazioni. Il valore della
+partecipazione e i rendimenti sono stime. Il report ha scopo dimostrativo e non costituisce consulenza legale, fiscale
+né finanziaria: ogni scelta va verificata con un notaio e un consulente.</p>
+</body>
+</html>
